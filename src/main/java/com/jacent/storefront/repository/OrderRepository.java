@@ -54,7 +54,7 @@ public class OrderRepository {
         try {
             jdbcTemplate.update(orderQueries.getAddItemToOrder(),
                     orderId,
-                    item.getProductId(),
+                    item.getItemId(),
                     item.getQuantity(),
                     item.getUnitPrice(),
                     item.getRetailPrice()

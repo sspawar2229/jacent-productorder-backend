@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class CartItem {
     private int cartItemId;
     private int cartId;
-    private int productId;
+    private int itemId;
     private int quantity;
     private LocalDateTime addedAt;
     private LocalDateTime updatedAt;

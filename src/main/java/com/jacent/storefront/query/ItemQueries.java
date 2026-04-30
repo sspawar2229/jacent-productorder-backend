@@ -8,11 +8,11 @@ import org.springframework.context.annotation.PropertySource;
 
 
 @Configuration
-@ConfigurationProperties(prefix = "product.queries")
-@PropertySource(value = "classpath:queries/product-queries.yaml", factory = YamlPropertySourceFactory.class)
+@ConfigurationProperties(prefix = "item.queries")
+@PropertySource(value = "classpath:queries/item-queries.yaml", factory = YamlPropertySourceFactory.class)
 @Data
-public class ProductQueries {
+public class ItemQueries {
 
-    private String productCount;
-    private String allProducts;
+    private String itemCount;
+    private String allItems;
 }

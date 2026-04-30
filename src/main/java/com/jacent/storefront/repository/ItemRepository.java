@@ -1,7 +1,7 @@
 package com.jacent.storefront.repository;
 
-import com.jacent.storefront.query.ProductQueries;
-import com.jacent.storefront.entity.Product;
+import com.jacent.storefront.query.ItemQueries;
+import com.jacent.storefront.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,25 +10,25 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ProductRepository {
+public class ItemRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
 
     @Autowired
-    ProductQueries productQueries;
+    ItemQueries itemQueries;
 
-    public List<Product> getAllProductsPagination(int page, int size) {
+    public List<Item> getAllItemsPagination(int page, int size) {
         int offset = page * size;
 
         return jdbcTemplate.query(
-                productQueries.getAllProducts(),
+                itemQueries.getAllItems(),
                 new Object[]{size, offset},
-                new BeanPropertyRowMapper<>(Product.class)
+                new BeanPropertyRowMapper<>(Item.class)
         );
     }
 
-    public int getTotalProductsCount() {
-        return jdbcTemplate.queryForObject(productQueries.getProductCount(), Integer.class);
+    public int getTotalItemsCount() {
+        return jdbcTemplate.queryForObject(itemQueries.getItemCount(), Integer.class);
     }
 }

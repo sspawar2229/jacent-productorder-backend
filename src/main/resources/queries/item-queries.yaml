@@ -1,0 +1,21 @@
+item:
+  queries:
+    itemCount: SELECT COUNT(*) from VW_AUTHORIZED_PRODUCT_CATALOG
+    allItems: |
+      SELECT
+      	MVID,
+      	DIVISION_NAME_ID as divisionId,
+      	DIVISION as division,
+      	DIVNAME,
+      	COMMODITY,
+      	UPC_CODE,
+      	UPC,
+      	ITEM_ID,
+      	ITEM_EXTID,
+      	ITEM_NAME,
+      	ITEM_DESC,
+      	PRICE,
+      	RETAIL_PRICE,
+      	RANK,
+      	ORDER_RANK
+      FROM VW_AUTHORIZED_PRODUCT_CATALOG  LIMIT ? OFFSET ?

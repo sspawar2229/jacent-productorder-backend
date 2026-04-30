@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
         for (CartItemResponse item : cart.getItems()) {
             OrderItem orderItem = OrderItem.builder()
                     .orderId(orderId)
-                    .productId(item.getProductId())
+                    .itemId(item.getItemId())
                     .quantity(item.getQuantity())
                     .unitPrice(BigDecimal.ZERO)
                     .retailPrice(BigDecimal.ZERO)
@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
         for (OrderItem item : items) {
             OrderItem orderItem = OrderItem.builder()
                     .orderId(newOrderId)
-                    .productId(item.getProductId())
+                    .itemId(item.getItemId())
                     .quantity(item.getQuantity())
                     .unitPrice(BigDecimal.ZERO)
                     .retailPrice(BigDecimal.ZERO)

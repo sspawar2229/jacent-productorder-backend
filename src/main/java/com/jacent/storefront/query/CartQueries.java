@@ -16,7 +16,7 @@ public class CartQueries {
     private String createCart;
     private String addItemToCart;
     private String cartItemsByCartId;
-    private String cartItemByCartIdAndProductId;
+    private String cartItemByCartIdAndItemId;
     private String cartItemByCartItemId;
     private String updateCartItemQuantity;
     private String deleteCart;

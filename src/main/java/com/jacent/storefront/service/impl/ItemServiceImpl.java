@@ -1,15 +1,15 @@
 package com.jacent.storefront.service.impl;
 
-import com.jacent.storefront.dto.response.ProductsResponse;
+import com.jacent.storefront.dto.response.ItemsResponse;
 import com.jacent.storefront.entity.Commodity;
 import com.jacent.storefront.entity.Configuration;
 import com.jacent.storefront.entity.Division;
-import com.jacent.storefront.entity.Product;
+import com.jacent.storefront.entity.Item;
 import com.jacent.storefront.repository.CommodityRepository;
 import com.jacent.storefront.repository.DivisionRepository;
-import com.jacent.storefront.repository.ProductRepository;
+import com.jacent.storefront.repository.ItemRepository;
 import com.jacent.storefront.service.ConfigurationService;
-import com.jacent.storefront.service.ProductService;
+import com.jacent.storefront.service.ItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +17,15 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ItemServiceImpl implements ItemService {
 
     private final ConfigurationService configurationService;
-    private final ProductRepository productRepository;
+    private final ItemRepository itemRepository;
     private final DivisionRepository divisionRepository;
     private final CommodityRepository commodityRepository;
 
-    ProductServiceImpl(ProductRepository productRepository, ConfigurationService configurationService, DivisionRepository divisionRepository, CommodityRepository commodityRepository) {
-        this.productRepository = productRepository;
+    ItemServiceImpl(ItemRepository itemRepository, ConfigurationService configurationService, DivisionRepository divisionRepository, CommodityRepository commodityRepository) {
+        this.itemRepository = itemRepository;
         this.configurationService = configurationService;
         this.divisionRepository = divisionRepository;
         this.commodityRepository = commodityRepository;
@@ -42,19 +42,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductsResponse getProducts(Integer pageNo, Integer pageSize) {
+    public ItemsResponse getItems(Integer pageNo, Integer pageSize) {
         if(pageSize == null){
             pageSize = configurationService.getValueAsInteger(Configuration.PAGINATION_SIZE, 25);
         }
 
-        long total = productRepository.getTotalProductsCount();
+        long total = itemRepository.getTotalItemsCount();
 
-        List<Product> productList = productRepository.getAllProductsPagination(pageNo, pageSize);
+        List<Item> itemList = itemRepository.getAllItemsPagination(pageNo, pageSize);
 
-        return ProductsResponse.builder()
+        return ItemsResponse.builder()
                 .pageNo(pageNo)
                 .pageSize(pageSize)
-                .content(productList)
+                .content(itemList)
                 .totalElements(total)
                 .totalPages((int) Math.ceil((double) total / pageSize))
                 .build();
