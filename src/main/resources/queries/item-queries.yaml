@@ -1,7 +1,7 @@
-product:
+item:
   queries:
-    productCount: SELECT COUNT(*) from VW_AUTHORIZED_PRODUCT_CATALOG
-    allProducts: |
+    itemCount: SELECT COUNT(*) from VW_AUTHORIZED_PRODUCT_CATALOG
+    allItems: |
       SELECT
       	MVID,
       	DIVISION_NAME_ID as divisionId,
@@ -10,9 +10,9 @@ product:
       	COMMODITY,
       	UPC_CODE,
       	UPC,
-      	ITEM_ID as product_id,
-      	ITEM_EXTID as product_ext_id,
-      	ITEM_NAME as product_name,
+      	ITEM_ID,
+      	ITEM_EXTID,
+      	ITEM_NAME,
       	ITEM_DESC,
       	PRICE,
       	RETAIL_PRICE,

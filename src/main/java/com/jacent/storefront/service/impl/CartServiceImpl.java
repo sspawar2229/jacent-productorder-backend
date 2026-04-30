@@ -41,7 +41,7 @@ public class CartServiceImpl implements CartService {
         Cart cart = getOrCreateCart(user.getUserId());
 
         Optional<CartItem> existing = cartRepository
-                .findItemByCartIdAndProductId(cart.getCartId(), cartItemRequest.getProductId());
+                .findItemByCartIdAndItemId(cart.getCartId(), cartItemRequest.getItemId());
 
         if (existing.isPresent()) {
             cartRepository.updateItemQuantity(existing.get().getCartItemId(), cartItemRequest.getQuantity());
@@ -123,7 +123,7 @@ public class CartServiceImpl implements CartService {
     private CartItemResponse toItemResponse(CartItem item) {
         return CartItemResponse.builder()
                 .cartItemId(item.getCartItemId())
-                .productId(item.getProductId())
+                .itemId(item.getItemId())
                 .quantity(item.getQuantity())
                 .addedAt(item.getAddedAt())
                 .updatedAt(item.getUpdatedAt())

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class CartItemResponse {
     private int cartItemId;
-    private int productId;
+    private int itemId;
     private int quantity;
     private LocalDateTime addedAt;
     private LocalDateTime updatedAt;

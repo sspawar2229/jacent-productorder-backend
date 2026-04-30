@@ -81,12 +81,12 @@ public class CartRepository {
         );
     }
 
-    public Optional<CartItem> findItemByCartIdAndProductId(int cartId, int productId) {
+    public Optional<CartItem> findItemByCartIdAndItemId(int cartId, int itemId) {
         try {
             CartItem item = jdbcTemplate.queryForObject(
-                    cartQueries.getCartItemByCartIdAndProductId(),
+                    cartQueries.getCartItemByCartIdAndItemId(),
                     new BeanPropertyRowMapper<>(CartItem.class),
-                    cartId, productId
+                    cartId, itemId
             );
             return Optional.ofNullable(item);
         } catch (EmptyResultDataAccessException e) {
@@ -103,7 +103,7 @@ public class CartRepository {
                     Statement.RETURN_GENERATED_KEYS
             );
             ps.setInt(1, cartId);
-            ps.setInt(2, request.getProductId());
+            ps.setInt(2, request.getItemId());
             ps.setInt(3, request.getQuantity());
             return ps;
         }, keyHolder);
