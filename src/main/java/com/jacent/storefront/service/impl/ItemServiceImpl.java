@@ -10,16 +10,12 @@ import com.jacent.storefront.repository.DivisionRepository;
 import com.jacent.storefront.repository.ItemRepository;
 import com.jacent.storefront.service.ConfigurationService;
 import com.jacent.storefront.service.ItemService;
+import com.jacent.storefront.service.OpenSearchService;
 import lombok.extern.slf4j.Slf4j;
-import org.opensearch.client.opensearch.OpenSearchClient;
-import org.opensearch.client.opensearch._types.FieldValue;
-import org.opensearch.client.opensearch.core.SearchResponse;
-import org.opensearch.client.opensearch.core.search.Hit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,7 +27,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommodityRepository commodityRepository;
     private final OpenSearchService openSearchService;
 
-    ItemServiceImpl(ItemRepository itemRepository, ConfigurationService configurationService, DivisionRepository divisionRepository, CommodityRepository commodityRepository, , OpenSearchService openSearchService) {
+    ItemServiceImpl(ItemRepository itemRepository, ConfigurationService configurationService, DivisionRepository divisionRepository, CommodityRepository commodityRepository , OpenSearchService openSearchService) {
         this.itemRepository = itemRepository;
         this.configurationService = configurationService;
         this.divisionRepository = divisionRepository;
@@ -58,7 +54,11 @@ public class ItemServiceImpl implements ItemService {
         long total = itemRepository.getTotalItemsCount();
 
         List<Item> itemList = itemRepository.getAllItemsPagination(pageNo, pageSize);
-
+//        try {
+//            openSearchService.bulkIndexProducts(itemList);
+//        } catch (Exception e){
+//            log.error("Error occured while bulkIndexProducts");
+//        }
         return ItemsResponse.builder()
                 .pageNo(pageNo)
                 .pageSize(pageSize)
@@ -69,7 +69,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Product> searchProducts(String searchString) throws IOException {
-        return openSearchService.searchProducts(searchString);
+    public List<Item> searchItems(String searchString) throws IOException {
+        return openSearchService.searchItems(searchString);
     }
 }

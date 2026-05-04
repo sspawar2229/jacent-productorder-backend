@@ -1,16 +1,16 @@
 spring:
   application:
     name: storefront
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/storefront?useSSL=false&serverTimezone=UTC
-#    username: root
-#    password: JXWF7ikt2nSRReKg
-#    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: ${SNOWFLAKE_DATABASE_URL}
-    username: ${SNOWFLAKE_USERNAME}
-    password: ${SNOWFLAKE_PASSWORD}
-    driver-class-name: net.snowflake.client.jdbc.SnowflakeDriver
+    url: jdbc:mysql://localhost:3306/storefront?useSSL=false&serverTimezone=UTC
+    username: root
+    password: JXWF7ikt2nSRReKg
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: ${SNOWFLAKE_DATABASE_URL}
+#    username: ${SNOWFLAKE_USERNAME}
+#    password: ${SNOWFLAKE_PASSWORD}
+#    driver-class-name: net.snowflake.client.jdbc.SnowflakeDriver
 
     hikari:
       connection-timeout: 60000
@@ -44,10 +44,9 @@ springdoc:
     try-it-out-enabled: true
     filter: true
 
-
 opensearch:
   host: localhost
   port: 9200
-  scheme: http
+  scheme: https
   username: admin
   password: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
