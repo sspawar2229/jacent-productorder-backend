@@ -10,9 +10,12 @@ import com.jacent.storefront.repository.DivisionRepository;
 import com.jacent.storefront.repository.ItemRepository;
 import com.jacent.storefront.service.ConfigurationService;
 import com.jacent.storefront.service.ItemService;
+import com.jacent.storefront.service.OpenSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -23,12 +26,14 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final DivisionRepository divisionRepository;
     private final CommodityRepository commodityRepository;
+    private final OpenSearchService openSearchService;
 
-    ItemServiceImpl(ItemRepository itemRepository, ConfigurationService configurationService, DivisionRepository divisionRepository, CommodityRepository commodityRepository) {
+    ItemServiceImpl(ItemRepository itemRepository, ConfigurationService configurationService, DivisionRepository divisionRepository, CommodityRepository commodityRepository , OpenSearchService openSearchService) {
         this.itemRepository = itemRepository;
         this.configurationService = configurationService;
         this.divisionRepository = divisionRepository;
         this.commodityRepository = commodityRepository;
+        this.openSearchService = openSearchService;
     }
 
     @Override
@@ -50,7 +55,6 @@ public class ItemServiceImpl implements ItemService {
         long total = itemRepository.getTotalItemsCount();
 
         List<Item> itemList = itemRepository.getAllItemsPagination(pageNo, pageSize);
-
         return ItemsResponse.builder()
                 .pageNo(pageNo)
                 .pageSize(pageSize)
@@ -58,5 +62,27 @@ public class ItemServiceImpl implements ItemService {
                 .totalElements(total)
                 .totalPages((int) Math.ceil((double) total / pageSize))
                 .build();
+    }
+
+    @Override
+    public List<Item> searchItems(String searchString) throws IOException {
+        boolean enableFullTextOpenSearch = configurationService.getValueAsBoolean(Configuration.ENABLE_FULL_TEXT_OPEN_SEARCH, false);
+        if(enableFullTextOpenSearch){
+            return openSearchService.searchItems(searchString);
+        } else {
+            // TODO: Search from DB
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public void rebuildOpenSearchIndexForItems() {
+        try {
+            // TODO: add in bulk (maybe create separate index for store)
+            List<Item> itemList = itemRepository.getAllItemsPagination(0, 1000);
+            openSearchService.bulkIndexProducts(itemList);
+        } catch (Exception e){
+            log.error("Error occured while bulkIndexProducts");
+        }
     }
 }
