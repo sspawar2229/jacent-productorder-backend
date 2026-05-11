@@ -3,10 +3,8 @@ package com.jacent.storefront.service.impl;
 import com.jacent.storefront.dto.response.CartItemResponse;
 import com.jacent.storefront.dto.response.CartResponse;
 import com.jacent.storefront.dto.response.OrderDetailsResponse;
-import com.jacent.storefront.entity.Configuration;
-import com.jacent.storefront.entity.Order;
-import com.jacent.storefront.entity.OrderItem;
-import com.jacent.storefront.entity.User;
+import com.jacent.storefront.entity.*;
+import com.jacent.storefront.repository.ItemRepository;
 import com.jacent.storefront.repository.OrderRepository;
 import com.jacent.storefront.service.CartService;
 import com.jacent.storefront.service.ConfigurationService;
@@ -24,11 +22,13 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
+    private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final ConfigurationService configurationService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, CartService cartService, ConfigurationService configurationService) {
+    public OrderServiceImpl(ItemRepository itemRepository, OrderRepository orderRepository, CartService cartService, ConfigurationService configurationService) {
+        this.itemRepository = itemRepository;
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.configurationService = configurationService;
@@ -40,13 +40,14 @@ public class OrderServiceImpl implements OrderService {
         User currentUser = SecurityUtils.getCurrentUser();
         int orderId = orderRepository.insertOrder(currentUser.getUserId(), "pending");
         CartResponse cart = cartService.getCartByUser();
-        for (CartItemResponse item : cart.getItems()) {
+        for (CartItemResponse cartItem : cart.getItems()) {
+            Item item = itemRepository.getItemById(cartItem.getItemId());
             OrderItem orderItem = OrderItem.builder()
                     .orderId(orderId)
-                    .itemId(item.getItemId())
-                    .quantity(item.getQuantity())
-                    .unitPrice(BigDecimal.ZERO)
-                    .retailPrice(BigDecimal.ZERO)
+                    .itemId(cartItem.getItemId())
+                    .quantity(cartItem.getQuantity())
+                    .unitPrice(item.getPrice())
+                    .retailPrice(item.getRetailPrice())
                     .build();
             orderRepository.insertOrderItem(orderId, orderItem);
         }

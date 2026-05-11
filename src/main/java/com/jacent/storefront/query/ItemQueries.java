@@ -12,7 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource(value = "classpath:queries/item-queries.yaml", factory = YamlPropertySourceFactory.class)
 @Data
 public class ItemQueries {
-
+    private String itemById;
     private String divisionsByStoreId;
     private String commoditiesByStoreId;
     private String itemCountByStoreId;
