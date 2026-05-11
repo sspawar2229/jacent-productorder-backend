@@ -26,6 +26,8 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2'
 //	implementation("net.snowflake:snowflake-jdbc:4.1.0")
 	implementation("net.snowflake:snowflake-jdbc:3.27.0")
+	implementation 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+	implementation 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
 
 	implementation("org.opensearch.client:opensearch-rest-client:3.5.0")
 	implementation("org.opensearch.client:opensearch-java:3.6.0")
