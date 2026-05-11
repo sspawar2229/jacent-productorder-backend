@@ -23,6 +23,22 @@ item:
           c.COMMODITY_ID = fsai.COMMODITY_ID AND 
           fsai.STORE_ID = :storeId
       ORDER BY COMMODITY_ID
+    itemById: |
+      SELECT
+        DIVISION_NAME_ID as division,
+        COMMODITY_ID as COMMODITY,
+        i.UPC_CODE,
+        i.ITEM_ID,
+        i.ITEM_NAME,
+        i.ITEM_DESC,
+        PRICE,
+        RETAIL_PRICE
+      FROM 
+        fact_store_authorized_items fsai,
+        items i
+      WHERE
+         i.ITEM_ID = fsai.ITEM_ID AND
+         i.ITEM_ID = :itemId
     itemCountByStoreId: |
             SELECT
               COUNT(*)

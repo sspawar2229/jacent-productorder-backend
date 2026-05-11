@@ -28,6 +28,25 @@ public class ItemRepository {
     @Autowired
     ItemQueries itemQueries;
 
+    public Item getItemById(int itemId) {
+        log.debug("Fetching item with ID: {}", itemId);
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("itemId", itemId);
+        try {
+            return namedParameterJdbcTemplate.queryForObject(
+                    itemQueries.getItemById(),
+                    params,
+                    ITEM_ROW_MAPPER
+            );
+        } catch (EmptyResultDataAccessException e) {
+            log.debug("No item found with ID: {}", itemId);
+            throw new ResourceRetrievalException("Failed to retrieve item", e);
+        } catch (DataAccessException e) {
+            log.error("Failed to retrieve item with ID: {}", itemId, e);
+            throw new ResourceRetrievalException("Failed to retrieve item", e);
+        }
+    }
+
     public List<Item> getAllItemsPagination(int page, int size, Integer storeId) {
         log.debug("Fetching items for store: {} - page: {}, size: {}", storeId, page, size);
 

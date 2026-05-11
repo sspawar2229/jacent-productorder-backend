@@ -3,11 +3,13 @@ package com.jacent.storefront.service.impl;
 import com.jacent.storefront.dto.request.CartItemRequest;
 import com.jacent.storefront.dto.response.CartItemResponse;
 import com.jacent.storefront.dto.response.CartResponse;
+import com.jacent.storefront.entity.Item;
 import com.jacent.storefront.exception.ResourceNotFoundException;
 import com.jacent.storefront.entity.Cart;
 import com.jacent.storefront.entity.CartItem;
 import com.jacent.storefront.entity.User;
 import com.jacent.storefront.repository.CartRepository;
+import com.jacent.storefront.repository.ItemRepository;
 import com.jacent.storefront.service.CartService;
 import com.jacent.storefront.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class CartServiceImpl implements CartService {
 
+    private final ItemRepository itemRepository;
     private final CartRepository cartRepository;
+
+    public CartServiceImpl(ItemRepository itemRepository, CartRepository cartRepository) {
+        this.itemRepository = itemRepository;
+        this.cartRepository = cartRepository;
+    }
 
     @Override
     public CartResponse getCartByUser() {
@@ -120,13 +127,16 @@ public class CartServiceImpl implements CartService {
         return item;
     }
 
-    private CartItemResponse toItemResponse(CartItem item) {
+    private CartItemResponse toItemResponse(CartItem cartItem) {
+        Item item = itemRepository.getItemById(cartItem.getItemId());
         return CartItemResponse.builder()
-                .cartItemId(item.getCartItemId())
-                .itemId(item.getItemId())
-                .quantity(item.getQuantity())
-                .addedAt(item.getAddedAt())
-                .updatedAt(item.getUpdatedAt())
+                .cartItemId(cartItem.getCartItemId())
+                .itemId(cartItem.getItemId())
+                .quantity(cartItem.getQuantity())
+                .price(item.getPrice())
+                .retailPrice(item.getRetailPrice())
+                .addedAt(cartItem.getAddedAt())
+                .updatedAt(cartItem.getUpdatedAt())
                 .build();
     }
 
