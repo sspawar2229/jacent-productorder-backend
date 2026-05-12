@@ -45,7 +45,7 @@ public class CartServiceImpl implements CartService {
     public CartResponse addItemToCart(CartItemRequest cartItemRequest) throws AccessDeniedException {
         User user = SecurityUtils.getCurrentUser();
         Cart cart = getOrCreateCart(user.getUserId());
-        Item item = itemRepository.getItemById(cartItemRequest.getItemId());
+        Item item = itemRepository.getItemById(user.getStoreId(), cartItemRequest.getItemId());
         if(!item.getStoreId().equals(user.getStoreId())){
             throw new AccessDeniedException("You cannot add items from a different store to your cart");
         }
@@ -130,7 +130,8 @@ public class CartServiceImpl implements CartService {
     }
 
     private CartItemResponse toItemResponse(CartItem cartItem) {
-        Item item = itemRepository.getItemById(cartItem.getItemId());
+        User user = SecurityUtils.getCurrentUser();
+        Item item = itemRepository.getItemById(user.getStoreId(), cartItem.getItemId());
         return CartItemResponse.builder()
                 .cartItemId(cartItem.getCartItemId())
                 .itemId(cartItem.getItemId())

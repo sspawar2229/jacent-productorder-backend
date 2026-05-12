@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
         int orderId = orderRepository.insertOrder(currentUser.getUserId(), "pending");
         CartResponse cart = cartService.getCartByUser();
         for (CartItemResponse cartItem : cart.getItems()) {
-            Item item = itemRepository.getItemById(cartItem.getItemId());
+            Item item = itemRepository.getItemById(currentUser.getStoreId(), cartItem.getItemId());
             OrderItem orderItem = OrderItem.builder()
                     .orderId(orderId)
                     .itemId(cartItem.getItemId())

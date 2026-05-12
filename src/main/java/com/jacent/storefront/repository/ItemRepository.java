@@ -28,9 +28,10 @@ public class ItemRepository {
     @Autowired
     ItemQueries itemQueries;
 
-    public Item getItemById(int itemId) {
+    public Item getItemById(int storeId, int itemId) {
         log.debug("Fetching item with ID: {}", itemId);
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("storeId", storeId);
         params.addValue("itemId", itemId);
         try {
             return namedParameterJdbcTemplate.queryForObject(
