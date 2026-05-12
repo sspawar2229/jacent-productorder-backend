@@ -39,7 +39,9 @@ item:
         items i
       WHERE
          i.ITEM_ID = fsai.ITEM_ID AND
+         fsai.STORE_ID = :storeId AND
          i.ITEM_ID = :itemId
+      LIMIT 1
     itemCountByStoreId: |
             SELECT
               COUNT(*)
