@@ -19,4 +19,5 @@ public class ItemQueries {
     private String itemCountByStoreId;
     private String allItemsByStoreId;
     private String searchItemsByStoreIdAndSearchKeyword;
+    private String allItemsWithStoreIds;
 }

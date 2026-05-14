@@ -100,3 +100,26 @@ item:
          COMMODITY ILIKE :search OR 
          DIVISION_NAME_ID ILIKE :search
       LIMIT :size
+    allItemsWithStoreIds:
+      SELECT
+        ITEM_ID,
+        ITEM_NAME,
+        ITEM_DESC,
+        PRICE,
+        RETAIL_PRICE,
+        UPC_CODE,
+        DIVISION_NAME_ID as DIVISION,
+        COMMODITY,
+        LISTAGG(DISTINCT STORE_ID, ',') AS STORE_IDS
+      FROM
+        VW_AUTHORIZED_PRODUCT_CATALOG
+      GROUP BY
+        ITEM_ID,
+        ITEM_NAME,
+        ITEM_DESC,
+        PRICE,
+        RETAIL_PRICE,
+        UPC_CODE,
+        DIVISION_NAME_ID,
+        COMMODITY
+      LIMIT :size OFFSET :offset
